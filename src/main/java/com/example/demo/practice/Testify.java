@@ -3,10 +3,15 @@ package com.example.demo.practice;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.example.demo.models.City;
 import com.example.demo.models.Student;
@@ -17,7 +22,13 @@ public class Testify {
 	static public List cities= Arrays.asList("Pune","mumbai","kolhapur","Solapur");
 	static public List students= new ArrayList();
 	
+	
 	public static void main(String[] args) {
+		HashMap<String, List<String>> mp= new HashMap<>();
+		mp.put("Maharashtra", Arrays.asList("Pune","Mumbai"));
+		mp.put("Bihar", Arrays.asList("Patna","gaya"));
+		mp.put("Andhra pradesh", Arrays.asList("Hyderabad"));
+		mp.put("UP", Arrays.asList("Ayodhya","sangam"));
 		students.add(new Student("Soham","pune","IT"));	
 		System.out.println(Testify.SecondHighestNumber(numbers));
 		System.out.println("Count of alphabets in given String: "+Testify.countingAlphabets(str));
@@ -26,6 +37,7 @@ public class Testify {
 		System.out.println("Duplicate chars :"+Testify.countDuplicateChars(str));
 		System.out.println("First NonRepeat Elements: "+Testify.firstNonRepeatElements(str));
 		ArrayList<String> st= new ArrayList<>();
+		System.out.println("State neame is :"+Testify.getStatename(mp, "Pune"));
 		
 	}																			
 	
@@ -101,6 +113,43 @@ public class Testify {
 	
 	
 	//Builder Design Pattern
+	
+	//Sum in Array of arrays
+	
+	static int sumArrayOfArrays(int [][] arr) {
+		
+		//int [][] arr={{1,2,3},{3,4,5},{6,8}};
+		
+		return Arrays.stream(arr).flatMapToInt(Arrays::stream).sum();
+		
+		
+	}
+	
+	//get state from city name
+	
+	static String getStatename(HashMap<String, List<String>> mp, String city) {
+		String state = null;
+		 mp.entrySet().iterator().next().equals(city);
+		 Iterator<Entry<String, List<String>>> itr= mp.entrySet().iterator();
+		 while(itr.hasNext()) {
+			 Entry<String, List<String>> getval = itr.next();
+			 if(getval.getValue().contains(city)) {
+				 state= getval.getKey();
+				 break;
+				 
+			 }
+		 }
+		
+		return state;
+	}
+	
+	//getStatename using stream
+	static String getStatenameUsingStream(HashMap<String, List<String>> mp, String city) {
+		
+		return mp.entrySet().stream().filter(p->p.getValue().contains(city)).map(Map.Entry::getKey).findFirst().orElse("");
+		
+		
+	}
 	
 	
 
